@@ -76,10 +76,6 @@ git clone --depth=1 https://github.com/rstudio/rstudio.git  # Get only latest
 cd rstudio/
 mkdir build
 cd build/
-cd ~/rstudio/dependencies/common
-bash install-common
-bash install-common
-cd
 bash ~/rstudio/dependencies/linux/install-dependencies-debian --exclude-qt-sdk
 bash ~/rstudio/dependencies/linux/install-dependencies-debian --exclude-qt-sdk
 cd /tmp
