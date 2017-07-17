@@ -30,6 +30,7 @@ CXXFLAGS="-g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wdat
              --enable-memory-profiling \
              --with-readline \
              --with-blas="-lopenblas" \
+             --enable-BLAS-shlib \
              --disable-nls \
              --without-recommended-packages \
 ## Build and install
@@ -62,3 +63,53 @@ ln -s /usr/local/lib/R/site-library/littler/bin/r /usr/local/bin/r
 mkdir -p /usr/local/bin/
 curl -O /usr/local/bin/install2.r https://github.com/eddelbuettel/littler/raw/master/inst/examples/install2.r
 chmod +x /usr/local/bin/install2.r
+
+#
+# Build RStudio server
+#
+# compile and install RStudio Server from source code:
+# References:
+# https://mark911.wordpress.com/2016/02/06/how-to-compile-and-install-wget-and-rstudio-server-from-source-code-via-github-in-ubuntu-14-04-lts-64-bit/
+#
+cd /
+git clone --depth=1 https://github.com/rstudio/rstudio.git  # Get only latest
+cd rstudio/
+mkdir build
+cd build/
+cd ~/rstudio/dependencies/common
+bash install-common
+bash install-common
+cd
+bash ~/rstudio/dependencies/linux/install-dependencies-debian
+bash ~/rstudio/dependencies/linux/install-dependencies-debian
+cd /tmp
+wget http://dl.google.com/closure-compiler/compiler-latest.zip
+unzip compiler-latest.zip
+rm COPYING README.md compiler-latest.zip
+sudo mv compiler.jar ~/rstudio/src/gwt/tools/compiler/compiler.jar
+cd ~/rstudio
+sudo rm -rf build
+sudo cmake -DRSTUDIO_TARGET=Server -DCMAKE_BUILD_TYPE=Release
+time sudo make
+# sudo make install process should take around 45 minutes to finish
+time sudo checkinstall
+# sudo checkinstall process should take around 20 minutes to finish
+apt-cache show rstudio
+# Terminal output should look like this:
+# Package: rstudio
+# Status: install ok installed
+# Priority: extra
+# Section: checkinstall
+# Installed-Size: 293492
+# Maintainer: root
+# Architecture: amd64
+# Version: 20160206-1
+# Provides: rstudio
+# Description: Package created with checkinstall 1.6.2
+# Description-md5: 556b8d22567101c7733f37ce6557412e
+sudo ln -s /usr/local/lib/rstudio-server/bin/rserver /usr/bin
+nohup rserver &
+# then use a web browser to navigate to http://127.0.0.1:8787/ to access the RStudio Server interface
+
+Advertisements
+Share this:
