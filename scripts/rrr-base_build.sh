@@ -76,6 +76,7 @@ git clone --depth=1 https://github.com/rstudio/rstudio.git  # Get only latest
 cd rstudio/
 mkdir build
 cd build/
+bash ~/rstudio/dependencies/linux/install-boost
 bash ~/rstudio/dependencies/linux/install-dependencies-debian --exclude-qt-sdk
 bash ~/rstudio/dependencies/linux/install-dependencies-debian --exclude-qt-sdk
 cd /tmp
