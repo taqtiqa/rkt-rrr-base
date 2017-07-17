@@ -166,35 +166,27 @@ $ACBUILD run -- aptitude install --download-only --assume-yes --full-resolver --
 $ACBUILD run -- aptitude install --assume-yes --full-resolver --purge-unused --without-recommends $BUILDDEPS
 
 #
-# Run install script and clean up temp files
+# Run R install script and clean up temp files
 #
 wd=/home/hedge/RubymineProjects/psac/coreos-vagrant/rkt-aci/r-project/.acbuild/currentaci/rootfs
-$ACBUILD run -- ls -la
+$ACBUILD run -- apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 $ACBUILD run --working-dir=/R-${R_VERSION} -- /bin/bash -c "eval /R-${R_VERSION}/${rname}_build.sh"
-#$ACBUILD run -- /bin/sh /tmp/R-${R_VERSION}/${rname}_build.sh
-$ACBUILD run -- rm -rf /tmp/*
+$ACBUILD run -- rm -rf /R-${R_VERSION}
 
-## Install nginx
-#$ACBUILD run apk add nginx
 #
-#$ACBUILD run --  apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
-#$ACBUILD run --  /bin/sh -c 'echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" | tee -a /etc/apt/sources.list.d/10gen.list'
-#$ACBUILD run --  apt-get update
-#$ACBUILD run --  apt-get -y install apt-utils
-#$ACBUILD run --  apt-get -y install mongodb-10gen
-
+# Setup RServer users
+#
 $ACBUILD run -- groupadd -g 1000 rstudio
 $ACBUILD run -- useradd -u 1000 -g 1000 -d / -M rstudio
 $ACBUILD set-user 1000
 $ACBUILD set-group 1000
 
-# Add a port for the mongo status page
+# Add a port for the RServer
 $ACBUILD port add rserver tcp 8787
 
 #Configure RServer and RSession
 # https://support.rstudio.com/hc/en-us/articles/200552316-Configuring-the-Server
 # Set the working directory the app will run in inside the container
-$ACBUILD set-working-directory /.acbuild/currentaci/rootfs/tmp/R-${R_VERSION}/
 
 ## Add a mount point for files to serve
 #$ACBUILD mount add html /usr/share/nginx/html

@@ -80,8 +80,8 @@ cd ~/rstudio/dependencies/common
 bash install-common
 bash install-common
 cd
-bash ~/rstudio/dependencies/linux/install-dependencies-debian
-bash ~/rstudio/dependencies/linux/install-dependencies-debian
+bash ~/rstudio/dependencies/linux/install-dependencies-debian --exclude-qt-sdk
+bash ~/rstudio/dependencies/linux/install-dependencies-debian --exclude-qt-sdk
 cd /tmp
 wget http://dl.google.com/closure-compiler/compiler-latest.zip
 unzip compiler-latest.zip
